@@ -6,6 +6,7 @@ import socket
 import sys
 from thread import *
  conn = {}
+ addr={}
 HOST = ''   # Symbolic name meaning all available interfaces
 PORT = 5188 # Arbitrary non-privileged port
  
@@ -57,10 +58,10 @@ def clientthread(conn):
 while 1:
     #wait to accept a connection - blocking call
     conn[0], addr[0] = s.accept()
-    print 'Connected with ' + addr[0] + ':' + str(addr[1])
+    print 'Connected with ' + addr[0][0] + ':' + str(add[0][1])
     
     conn[1], addr[1] = s.accept()
-    print 'Connected with ' + addr[0] + ':' + str(addr[1])
+    print 'Connected with ' + addr[1][0] + ':' + str(addr[1][1])
      
     #start new thread takes 1st argument as a function name to be run, second is the tuple of arguments to the function.
     start_new_thread(clientthread ,(conn,))
