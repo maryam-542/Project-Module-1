@@ -5,7 +5,7 @@
 import socket
 import sys
 from thread import *
- conn = []
+ conn = {}
 HOST = ''   # Symbolic name meaning all available interfaces
 PORT = 5188 # Arbitrary non-privileged port
  
@@ -34,24 +34,21 @@ def clientthread(conn):
     if conn[0]:
 	     while True:
          
-        #Receiving from client
-        data = conn[0].recv(1024)
-        reply = 'OK...' + data
-        if not data: 
-            break
-     
-        conn[1].sendall(reply)
+        	#Receiving from client
+        	data = conn[0].recv(1024)
+        	reply = 'OK...' + data
+        	if data:
+            		conn[1].sendall(reply)
      
     #came out of loop
     conn.close()
  if conn[1]:
     while True:
 	    #Receiving from client
-        data = conn[1].recv(1024)
-        reply = 'OK...' + data
-        if not data: 
-            break
-			 conn[0].sendall(reply)
+        	data = conn[1].recv(1024)
+	        reply = 'OK...' + data
+                if data:
+		    conn[0].sendall(reply)
      
     #came out of loop
     conn.close()
@@ -59,7 +56,10 @@ def clientthread(conn):
 #now keep talking with the client
 while 1:
     #wait to accept a connection - blocking call
-    conn, addr = s.accept()
+    conn[0], addr[0] = s.accept()
+    print 'Connected with ' + addr[0] + ':' + str(addr[1])
+    
+    conn[1], addr[1] = s.accept()
     print 'Connected with ' + addr[0] + ':' + str(addr[1])
      
     #start new thread takes 1st argument as a function name to be run, second is the tuple of arguments to the function.
