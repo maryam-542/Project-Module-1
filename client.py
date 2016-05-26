@@ -1,18 +1,22 @@
-
-import socket               # Import socket module
+from socket import *
+from threading import Thread
 import sys
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-print 'Socket Created'
-         
-host = socket.gethostname()
-port = 5188                # Reserve a port for your service.
 
-s.connect((host, port))
+HOST = 'localhost'
+PORT = 8888
+ADDR = (HOST, PORT)
+Sock = socket(AF_INET, SOCK_STREAM)
+Sock.connect(ADDR)
 
-print s.recv(1024)
+def recv():
+    while True:
+        data = Sock.recv(1024)
+        if not data: sys.exit(0)
+        print data
 
-s.close                     # Close the socket when done
+Thread(target=recv).start()
+while True:
+    data = raw_input('> ')
+    Sock.send(data)
 
-
-
-
+Sock.close()
